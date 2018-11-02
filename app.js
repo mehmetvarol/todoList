@@ -31,32 +31,41 @@ function eventListener() {
     todos.forEach((todo) => {
       addTodoToUI(todo);
     });
+  });
+  // Todoları Arayüzden Silme
+  secondsCardBody.addEventListener("click", (deleteTodo) => {
+    if (deleteTodo.target.className === "fa fa-remove") {
+      deleteTodo.target.parentElement.parentElement.remove();
+      showAlert("success", "Todo başarıyla silindi...");
+    }
+    deleteTodoFormStorage(deleteTodo.target.parentElement.parentElement.textContent);
+  });
 
-    // Todoları Arayüzden Silme
-    secondsCardBody.addEventListener("click", (deleteTodo) => {
-      if (deleteTodo.target.className === "fa fa-remove") {
-        deleteTodo.target.parentElement.parentElement.remove();
-        showAlert("success", "Todo başarıyla silindi...");
+  // Todoları Filtreleme
+  filter.addEventListener("keyup", (filterTodos) => {
+    const filterValue = filterTodos.target.value.toLowerCase();
+    const listItems = document.querySelectorAll(".list-group-item");
+
+    listItems.forEach((listItem) => {
+      const text = listItem.textContent.toLowerCase();
+      if (text.indexOf(filterValue) === -1) {
+        //Bulamadı
+        listItem.setAttribute("style", "display:none !important");
+      } else {
+        listItem.setAttribute("style", "display:block");
       }
-      deleteTodoFormStorage(deleteTodo.target.parentElement.parentElement.textContent);
     });
+  });
 
-    // Todoları Filtreleme
-    filter.addEventListener("keyup", (filterTodos) => {
-      const filterValue = filterTodos.target.value.toLowerCase();
-      const listItems = document.querySelectorAll(".list-group-item");
-
-      listItems.forEach((listItem) => {
-        const text = listItem.textContent.toLowerCase();
-        if (text.indexOf(filterValue) === -1) {
-          //Bulamadı
-          listItem.setAttribute("style", "display:none !important");
-        } else{
-          listItem.setAttribute("style", "display:block");
-        }
-      });
-    });
-
+  // Tüm Todoları Temizleme
+  clearButton.addEventListener("click", (clearAllTodo) => {
+    //Arayüzden Todoları Temizleme
+    if (confirm("Tüm taskları silmek istediğinize emin misiniz? ")) {
+      while(todoList.firstElementChild != null){
+        todoList.removeChild(todoList.firstElementChild);
+      }
+      localStorage.removeItem("todos"); // Tüm Local Storageleri Silme
+    }
   });
 
 }
