@@ -34,9 +34,11 @@ function eventListener() {
 
     // Todoları Arayüzden Silme
     secondsCardBody.addEventListener("click",(deleteTodo) =>{
-      deleteTodo.target.parentElement.parentElement.remove();
+      if (deleteTodo.target.className === "fa fa-remove") {
+        deleteTodo.target.parentElement.parentElement.remove();
+        showAlert("success","Todo başarıyla silindi...");
+       }
       deleteTodoFormStorage(deleteTodo.target.parentElement.parentElement.textContent);
-      showAlert("success","Todo başarıyla silindi...");
     });
   });
 
