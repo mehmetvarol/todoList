@@ -31,6 +31,12 @@ function eventListener() {
     todos.forEach((todo) => {
       addTodoToUI(todo);
     });
+
+    // Todoları Arayüzden Silme
+    secondsCardBody.addEventListener("click",(deleteTodo) =>{
+      deleteTodo.target.parentElement.parentElement.remove();
+      showAlert("success","Todo başarıyla silindi...")
+    });
   });
 
 }
