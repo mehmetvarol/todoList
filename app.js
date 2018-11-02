@@ -14,34 +14,45 @@ function eventListener() {
     const newTodo = todoInput.value.trim();
 
     if (newTodo === "") {
-      /*
-        <div class="alert alert-danger" role="alert">
-                            <strong>Oh Snap!</strong>
-                        </div>
-      */
-      showAlert("danger","Lütfen bir todo girin...");
+      showAlert("danger", "Lütfen bir todo girin...");
     } else {
       addTodoToUI(newTodo);
-      showAlert("success","Başarıyla Eklendi...");
+      addTodoToStorage(newTodo);
+      showAlert("success", "Başarıyla Eklendi...");
 
     }
-
 
     addTodo.preventDefault();
   });
 
 }
 
-function showAlert(type,message){
- const alert = document.createElement("div");
- alert.className = `alert alert-${type}`;
- alert.textContent = message;
+function getTodosFromStorage() { // Storagedan Todoları Alma
+  let todos;
+  if (localStorage.getItem("todos") === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem("todos"));
+  }
+  return todos;
+}
+
+function addTodoToStorage(newTodo) {
+  let todos = getTodosFromStorage();
+  todos.push(newTodo);
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+function showAlert(type, message) {
+  const alert = document.createElement("div");
+  alert.className = `alert alert-${type}`;
+  alert.textContent = message;
   firstCardBody.appendChild(alert);
 
   //setTimeout
-  setTimeout(function(){
+  setTimeout(function() {
     alert.remove();
-  },2000);
+  }, 2000);
 };
 
 function addTodoToUI(newTodo) {
@@ -64,7 +75,4 @@ function addTodoToUI(newTodo) {
   todoList.appendChild(listItem);
   todoInput.value = "";
 
-
-
-
-};
+}
