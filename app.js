@@ -24,6 +24,14 @@ function eventListener() {
 
     addTodo.preventDefault();
   });
+  // Sayfa Yüklendiğinde Todoları Yükleme...
+  document.addEventListener("DOMContentLoaded", (loadAllTodosToUI) => {
+    let todos = getTodosFromStorage();
+
+    todos.forEach((todo) => {
+      addTodoToUI(todo);
+    });
+  });
 
 }
 
