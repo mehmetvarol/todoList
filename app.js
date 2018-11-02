@@ -33,27 +33,45 @@ function eventListener() {
     });
 
     // Todoları Arayüzden Silme
-    secondsCardBody.addEventListener("click",(deleteTodo) =>{
+    secondsCardBody.addEventListener("click", (deleteTodo) => {
       if (deleteTodo.target.className === "fa fa-remove") {
         deleteTodo.target.parentElement.parentElement.remove();
-        showAlert("success","Todo başarıyla silindi...");
-       }
+        showAlert("success", "Todo başarıyla silindi...");
+      }
       deleteTodoFormStorage(deleteTodo.target.parentElement.parentElement.textContent);
     });
+
+    // Todoları Filtreleme
+    filter.addEventListener("keyup", (filterTodos) => {
+      const filterValue = filterTodos.target.value.toLowerCase();
+      const listItems = document.querySelectorAll(".list-group-item");
+
+      listItems.forEach((listItem) => {
+        const text = listItem.textContent.toLowerCase();
+        if (text.indexOf(filterValue) === -1) {
+          //Bulamadı
+          listItem.setAttribute("style", "display:none !important");
+        } else{
+          listItem.setAttribute("style", "display:block");
+        }
+      });
+    });
+
   });
 
 }
 // Todoları Storageden Silme
-function deleteTodoFormStorage(deletetodo){
+function deleteTodoFormStorage(deletetodo) {
   let todos = getTodosFromStorage();
 
-  todos.forEach((todo,index)=>{
+  todos.forEach((todo, index) => {
     if (todo === deletetodo) {
-      todos.splice(index,1); // Arraydan değeri silme
-     }
-     localStorage.setItem("todos",JSON.stringify(todos));
+      todos.splice(index, 1); // Arraydan değeri silme
+    }
+    localStorage.setItem("todos", JSON.stringify(todos));
   });
 }
+
 function getTodosFromStorage() { // Storagedan Todoları Alma
   let todos;
   if (localStorage.getItem("todos") === null) {
