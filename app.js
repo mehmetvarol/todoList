@@ -35,12 +35,23 @@ function eventListener() {
     // Todoları Arayüzden Silme
     secondsCardBody.addEventListener("click",(deleteTodo) =>{
       deleteTodo.target.parentElement.parentElement.remove();
-      showAlert("success","Todo başarıyla silindi...")
+      deleteTodoFormStorage(deleteTodo.target.parentElement.parentElement.textContent);
+      showAlert("success","Todo başarıyla silindi...");
     });
   });
 
 }
+// Todoları Storageden Silme
+function deleteTodoFormStorage(deletetodo){
+  let todos = getTodosFromStorage();
 
+  todos.forEach((todo,index)=>{
+    if (todo === deletetodo) {
+      todos.splice(index,1); // Arraydan değeri silme
+     }
+     localStorage.setItem("todos",JSON.stringify(todos));
+  });
+}
 function getTodosFromStorage() { // Storagedan Todoları Alma
   let todos;
   if (localStorage.getItem("todos") === null) {
